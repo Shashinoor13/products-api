@@ -1,0 +1,47 @@
+services:
+  product-backend:
+    build:
+      context: ./product_backend
+      dockerfile: Dockerfile
+    container_name: product-backend
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PG_HOST: postgres
+      PG_USER: postgres
+      PG_PASSWORD: password
+      PG_DATABASE: products_db
+      PG_PORT: 5432
+    volumes:
+      - ./product_backend:/app
+    depends_on:
+      - postgres
+
+  product-frontend:
+    build:
+      context: ./product_frontend
+      dockerfile: Dockerfile
+    container_name: product-frontend
+    ports:
+      - "4173:4173"
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - product-backend
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: product-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: products_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
