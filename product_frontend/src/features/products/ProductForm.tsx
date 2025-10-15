@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { useProduct } from "@/hooks/useProducts";
+import { useProduct } from "@/hooks/useTable";
 import { Spinner } from "@/components/ui/spinner";
 import type { CreateProductDto } from "@/daos/product.daos";
 

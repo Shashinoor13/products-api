@@ -45,3 +45,14 @@ export async function updateProduct(id: string, data: UpdateProductDto): Promise
 export async function deleteProduct(id: number): Promise<void> {
   await apiClient.delete(`/products/${id}`);
 }
+
+// Bulk create products
+export async function bulkCreateProducts(data: CreateProductDto[]): Promise<Product[]> {
+  const response = await apiClient.post<Product[]>('/products/bulk', data);
+  return response.data;
+}
+
+// Bulk delete products
+export async function bulkDeleteProducts(ids: string[]): Promise<void> {
+  await apiClient.delete('/products/bulk', { data: ids });
+}

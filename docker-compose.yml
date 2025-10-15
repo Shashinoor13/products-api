@@ -27,6 +27,7 @@ services:
       - "4173:4173"
     environment:
       NODE_ENV: production
+      VITE_PRODUCT_BACKEND_ENDPOINT: "http://product-backend:3000"
     depends_on:
       - product-backend
 
@@ -45,3 +46,7 @@ services:
 
 volumes:
   pgdata:
+
+networks:
+  default:
+    driver: bridge

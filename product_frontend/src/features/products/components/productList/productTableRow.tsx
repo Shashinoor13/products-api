@@ -8,14 +8,26 @@ import DeleteConfirmation from "./deleteConfirmation";
 
 const ProductRow = ({
   product,
+  selected,
+  onSelect,
   onEdit,
   onDelete,
 }: {
   product: Product;
+  selected: boolean;
+  onSelect: (id: string, checked: boolean) => void;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
 }) => (
   <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+    <td className="px-6 py-4 whitespace-nowrap">
+      <input
+        type="checkbox"
+        checked={selected}
+        onChange={(e) => onSelect(product.id.toString(), e.target.checked)}
+        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+      />
+    </td>
     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
       {product.id}
     </td>

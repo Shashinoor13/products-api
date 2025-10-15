@@ -20,6 +20,19 @@ export class ProductRepository {
     return saved;
   }
 
+  async createBulk(data: Partial<Product>[]): Promise<Product[]> {
+    const entities = this.repo.create(data);
+    const saved = await this.repo.save(entities);
+    this.invalidateFindAllCache();
+    return saved;
+  }
+
+  async deleteBulk(ids: string[]): Promise<void> {
+    await this.repo.delete(ids);
+    this.cache.clear();
+    this.invalidateFindAllCache();
+  }
+
   async findAll(page: number, limit: number): Promise<[Product[], number]> {
     const key = `products:all:page=${page}:limit=${limit}`;
     const cached = this.cache.get(key);

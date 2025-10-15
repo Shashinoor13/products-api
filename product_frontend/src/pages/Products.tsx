@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct } from "@/hooks/useProducts";
+import { useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct, useBulkCreateProducts, useBulkDeleteProducts } from "@/hooks/useTable";
 import ProductList from "@/features/products/productList";
 import ProductForm from "@/features/products/ProductForm";
-
+import CsvImportModal from "@/features/products/CsvImportModal";
+import { Button } from "@/components/ui/button";
+import { Upload } from "lucide-react";
 import type { CreateProductDto } from "@/daos/product.daos";
 import CreateProductButton from "@/components/common/new_product";
 
@@ -23,8 +25,15 @@ export default function Products() {
   const createMutation = useCreateProduct();
   const updateMutation = useUpdateProduct();
   const deleteMutation = useDeleteProduct();
+  const bulkCreateMutation = useBulkCreateProducts();
+  const bulkDeleteMutation = useBulkDeleteProducts();
 
   const showModal = mode === "create" || mode === "edit";
+  const showImportModal = mode === "import";
+
+  const openImportModal = () => {
+    navigate("?mode=import");
+  };
 
 
 
@@ -49,11 +58,30 @@ export default function Products() {
     await deleteMutation.mutateAsync(id);
   };
 
+  const handleBulkImport = async (products: CreateProductDto[]) => {
+    await bulkCreateMutation.mutateAsync(products);
+    closeModal();
+  };
+
+  const handleBulkDelete = async (ids: string[]) => {
+    await bulkDeleteMutation.mutateAsync(ids);
+  };
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Products</h1>
-        <CreateProductButton/>
+        <div className="flex gap-3">
+          <Button
+            variant="outline"
+            onClick={openImportModal}
+            className="flex items-center gap-2"
+          >
+            <Upload className="h-4 w-4" />
+            Import from CSV
+          </Button>
+          <CreateProductButton/>
+        </div>
       </div>
 
       {error && (
@@ -70,6 +98,13 @@ export default function Products() {
         />
       )}
 
+      {showImportModal && (
+        <CsvImportModal
+          onSubmit={handleBulkImport}
+          onCancel={closeModal}
+        />
+      )}
+
       <ProductList
         data={productsData?.data || []}
         loading={isLoading}
@@ -78,6 +113,7 @@ export default function Products() {
         totalPages={productsData?.totalPages || 0}
         onEdit={openEditModal}
         onDelete={handleDeleteClick}
+        onBulkDelete={handleBulkDelete}
         onPageChange={setPage}
         onLimitChange={setLimit}
         limit={limit}
