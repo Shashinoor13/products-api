@@ -13,8 +13,6 @@ services:
       PG_PASSWORD: password
       PG_DATABASE: products_db
       PG_PORT: 5432
-    volumes:
-      - ./product_backend:/app
     depends_on:
       - postgres
 
@@ -22,12 +20,13 @@ services:
     build:
       context: ./product_frontend
       dockerfile: Dockerfile
+      args:
+        VITE_PRODUCT_BACKEND_ENDPOINT: "https://heubert-api.shashinoor.com.np"
     container_name: product-frontend
     ports:
       - "4173:4173"
     environment:
       NODE_ENV: production
-      VITE_PRODUCT_BACKEND_ENDPOINT: "http://product-backend:3000"
     depends_on:
       - product-backend
 

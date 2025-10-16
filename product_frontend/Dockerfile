@@ -13,6 +13,10 @@ RUN npm ci
 # Copy the rest of the application code
 COPY . .
 
+# Set the API endpoint for build time
+ARG VITE_PRODUCT_BACKEND_ENDPOINT=http://localhost:3000
+ENV VITE_PRODUCT_BACKEND_ENDPOINT=$VITE_PRODUCT_BACKEND_ENDPOINT
+
 # Build the application
 RUN npm run build
 

@@ -11,9 +11,10 @@ export async function createApp() {
 async function bootstrap() {
   const app = await createApp();
   app.enableCors({
-    origin: 'http://localhost:4173',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
+    origin: [
+    'http://localhost:4173',          // local frontend
+    'https://heubert.shashinoor.com.np' // deployed frontend
+  ],
   });
   const port = process.env.PORT ?? 3000;
 
