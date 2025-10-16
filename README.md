@@ -29,7 +29,7 @@ Once the containers are up and running, you can access the different parts of th
 *   **Backend API:** [http://localhost:3000](http://localhost:3000)
 
 
-## Testing the backend**
+## Testing the backend
 To test the cache implementation, There are 16 test cases exploring Basic Operations,Evictions,Configuration and Some Edge Cases
 
 ```bash
