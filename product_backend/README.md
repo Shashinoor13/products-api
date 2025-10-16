@@ -4,7 +4,7 @@ This document provides an overview of the NestJS backend service for the Heubert
 
 ## Code Structure
 
-The backend follows a modular, domain-driven structure, separating concerns into distinct layers.
+THe code structure tries to follow the suggested architecture to my best of understanding.
 
 ```
 src/
@@ -58,5 +58,3 @@ A typical request, such as fetching a list of products (`GET /products?page=1&li
     -   The result from the database is then stored in the cache using the generated key for subsequent requests.
     -   The data is returned to the use case.
 7.  **Response**: The DTO returned from the use case is serialized into a JSON response and sent back to the client. The `LoggerMiddleware` logs the final status code and response time.
-
-This layered architecture ensures that business logic is decoupled from the web framework and data access, making the application easier to maintain, test, and scale.
